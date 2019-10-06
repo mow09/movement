@@ -87,16 +87,24 @@ class Motion:
 # first_try = Motion(80, 80)
 
 
-def make_setup(p, pos, radius, v, n):
-    p.speed(v)
-    p.pensize(2)
-    # p.forward(radius)
-    # p.setx(pos[1])
-    # p.sety(pos[0])
-    p.setpos(pos)
-    # p.left(90)
-    p.setheading(90)
-    p.forward(2*pi*radius/n/2)
+def make_setup(objects):  # p, pos, radius, v, n):
+    for o in objects:
+        o.turt.color(o.color)
+        if o.planet == 0:
+            o.turt.goto(o.parent.turt.pos() + (o.r, 0))
+            o.turt.speed(0)
+            o.turt.pensize(2)
+            o.parent_pos = o.parent.pos
+        else:
+            o.turt.speed(0)
+            o.turt.pensize(1)
+        # p.forward(radius)
+        # p.setx(pos[1])
+        # p.sety(pos[0])
+            o.turt.setpos(o.pos)
+        # p.left(90)
+        o.turt.setheading(90)
+        o.turt.forward(2*pi*o.r/o.orbittime/2)
 
 
 def make_move(p, radius, n):
@@ -109,9 +117,9 @@ def display_percent(m, n):
         print(int(m/n*100), '%')
 
 
-def make_movement(planets):
+def make_movement(planets, steps):
     # approx ist die Anzahl der Schritte zur Annäherung des Kreises
-    steps = 100_000  # _000
+    # steps = 30_000  # _000
     for i in range(steps):
         display_percent(i, steps)
 
@@ -120,7 +128,13 @@ def make_movement(planets):
             if i % planet.orbittime == 0:
                 # print('as', 1 % planet.orbittime)
                 if planet.planet == 0:
-                    print('Moon movement', planet.parent.turt.pos())
+                    # print('Moon movement', planet.parent.turt.pos())
+                    # planet.turt.goto(planet.parent.turt.pos() + (planet.r, 0))
+                    print(planet.parent_pos, planet.parent.turt.pos())
+                    if planet.parent_pos != planet.parent.turt.pos():
+                        planet.turt.setpos((planet.turt.pos() +
+                                            planet.parent.turt.pos() - planet.parent_pos))
+                        planet.parent_pos = planet.parent.turt.pos()
                 make_move(planet.turt, planet.r, planet.orbittime)
             # p.circle(r)
             # print(p.pos())
@@ -130,52 +144,56 @@ def make_movement(planets):
 
 
 class Planet:  # - adjective center
-    def __init__(self, turt, distance2center, orbittime):
-        self.planet = 1
+    def __init__(self, turt, color, pos, distance2center, orbittime):
+        self.planet = True
         self.turt = turt
+        self.color = color
+        self.pos = pos
         self.r = distance2center
         self.orbittime = orbittime
 
 
 class Moon(Planet):  # - adjectve adjective center
-    def __init__(self, parent, turt, distance2center, ortbittime):  # parent_planet
+    def __init__(self, parent, turt, color, pos, distance2center, ortbittime):  # parent_planet
         self.parent = parent
-        Planet.__init__(self, turt, distance2center, ortbittime)
-        self.planet = 0
+        Planet.__init__(self, turt, color, pos, distance2center, ortbittime)
+        self.planet = False
+        self.parent_pos = (0, 0)
+        # self.orbittime = orbittime
 
 
-planet1 = Planet(turtle.Turtle(), 228, 687)
-earth = Planet(turtle.Turtle(), 150, 365)
-planet3 = Planet(turtle.Turtle(), 108, 225)
-planet4 = Planet(turtle.Turtle(), 58, 88)
+position = [(228, 0), (150, 0), (108, 100), (58, 100)]
+radius = [228, 150, 108, 58]
+orbittime = [687, 365, 225, 88]
+color = ['black', 'black', 'black', 'black', ]
 
-mond = Moon(earth, turtle.Turtle(), 01.385, 27)
+planet1 = Planet(turtle.Turtle(), color[0], position[0], radius[0], orbittime[0])
+earth = Planet(turtle.Turtle(), color[1], position[1], radius[1], orbittime[1])
+planet3 = Planet(turtle.Turtle(), color[2], position[2], radius[2], orbittime[2])
+planet4 = Planet(turtle.Turtle(), color[3], position[3], radius[3], orbittime[3])
+
+# mond = Moon(parent=earth, turt=turtle.Turtle(), color='blue',
+#             distance2center=0.385, orbittime=27)
+mond = Moon(earth, turtle.Turtle(), 'blue', earth.pos, 10.385, 27)
 
 planets = [planet1, earth,
            planet3, planet4, mond]
 
-# platur1 = turtle.Turtle()
-# platur2 = turtle.Turtle()
-# platur3 = turtle.Turtle()
-# platur4 = turtle.Turtle()
-# platur5 = turtle.Turtle()
-
-# platurs = [platur1, platur2,
-#            platur3, platur4, platur5]
-position = [(228, 0), (150, 0), (108, 0), (58, 0)]
-radius = [228, 150, 108, 58]
 # speed = [0, 0.5, 1, 1.5]
 speed = [0 for i in range(len(planets))]
 
-approx = 100
+approx = 10
+steps = 300_000
 
-make_setup(planet1.turt, position[0], radius[0], speed[0], approx)
-make_setup(earth.turt, position[1], radius[1], speed[1], approx)
-make_setup(planet3.turt, position[2], radius[2], speed[2], approx)
-make_setup(planet4.turt, position[3], radius[3], speed[3], approx)
-make_setup(planet4.turt, position[3], mond.r, speed[3], approx)
+make_setup(planets)
 
-make_movement(planets)
+# make_setup(planet1.turt, position[0], radius[0], speed[0], approx)
+# make_setup(earth.turt, position[1], radius[1], speed[1], approx)
+# make_setup(planet3.turt, position[2], radius[2], speed[2], approx)
+# make_setup(planet4.turt, position[3], radius[3], speed[3], approx)
+# make_setup(planet4.turt, position[3], mond.r, speed[3], approx)
+
+make_movement(planets, steps)
 
 
 # tu = turtle.Screen()
