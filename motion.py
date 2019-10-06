@@ -90,8 +90,8 @@ def positioning(center):
     print(center)
 
 
-def make_setup(objects):  # p, pos, radius, v, n):
-    for o in objects:
+def make_setup(objects, setup):  # p, pos, radius, v, n):
+    for i, o in enumerate(objects):
         o.turt.color(o.color)
         if o.planet == 0:
             o.turt.penup()
@@ -106,9 +106,14 @@ def make_setup(objects):  # p, pos, radius, v, n):
         # p.forward(radius)
         # p.setx(pos[1])
         # p.sety(pos[0])
-            o.turt.setpos((o.r, 0))
+            o.turt.goto(center)
+            o.turt.lt(setup[i])
+            o.turt.fd(o.r)
+            # o.turt.setpos((o.r, 0))
         # p.left(90)
-        o.turt.setheading(90)
+        # o.turt.setheading(90)
+        # o.turt.seth(90)
+        o.turt.lt(90)
         o.turt.forward(2*pi*o.r/o.orbittime/2)
 
 
@@ -135,8 +140,10 @@ def make_movement(planets, steps):
                 if planet.planet == 0:
                     # print('Moon movement', planet.parent.turt.pos())
                     # planet.turt.goto(planet.parent.turt.pos() + (planet.r, 0))
-                    print(planet.parent_pos, planet.parent.turt.pos())
+                    # print(planet.parent_pos, planet.parent.turt.pos())
                     if planet.parent_pos != planet.parent.turt.pos():
+                        # print(planet.center())
+                        print('here', planet.get_center(), planet.parent.turt.pos())
                         planet.turt.setpos((planet.turt.pos() +
                                             planet.parent.turt.pos() - planet.parent_pos))
                         planet.parent_pos = planet.parent.turt.pos()
@@ -149,21 +156,27 @@ def make_movement(planets, steps):
 
 
 class Planet:  # - adjective center
-    def __init__(self, turt, color, distance2center, orbittime):
+    def __init__(self, turt, color, center, distance2center, orbittime):
         self.planet = True
         self.turt = turt
         self.color = color
         # self.pos = pos
+        self.center = center
         self.r = distance2center
         self.orbittime = orbittime
 
 
 class Moon(Planet):  # - adjectve adjective center
-    def __init__(self, parent, turt, color, distance2center, ortbittime):  # parent_planet
+    def __init__(self, parent, turt, color, distance2center, ortbittime):
         self.parent = parent
-        Planet.__init__(self, turt, color, distance2center, ortbittime)
+        Planet.__init__(self, turt, color, center, distance2center, ortbittime)
         self.planet = False
         self.parent_pos = (0, 0)
+        # self.center = self.get_center()
+
+    def get_center(self):
+        return self.parent.turt.pos()
+
         # self.orbittime = orbittime
 
 
@@ -172,10 +185,12 @@ radius = [228, 150, 108, 58]
 orbittime = [687, 365, 225, 88]
 color = ['black', 'black', 'black', 'black', ]
 
-planet1 = Planet(turtle.Turtle(), color[0], radius[0], orbittime[0])
-earth = Planet(turtle.Turtle(), color[1], radius[1], orbittime[1])
-planet3 = Planet(turtle.Turtle(), color[2], radius[2], orbittime[2])
-planet4 = Planet(turtle.Turtle(), color[3], radius[3], orbittime[3])
+center = (30, 10)
+
+planet1 = Planet(turtle.Turtle(), color[0], center, radius[0], orbittime[0])
+earth = Planet(turtle.Turtle(), color[1], center, radius[1], orbittime[1])
+planet3 = Planet(turtle.Turtle(), color[2], center, radius[2], orbittime[2])
+planet4 = Planet(turtle.Turtle(), color[3], center, radius[3], orbittime[3])
 
 # mond = Moon(parent=earth, turt=turtle.Turtle(), color='blue',
 #             distance2center=0.385, orbittime=27)
@@ -190,7 +205,10 @@ speed = [0 for i in range(len(planets))]
 approx = 10
 steps = 300_000
 
-make_setup(planets)
+# is a list of fix angles - should be a setup by TIME
+set_up = [45, 90, 135, 186]
+
+make_setup(planets, set_up)
 
 make_movement(planets, steps)
 
