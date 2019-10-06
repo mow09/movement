@@ -86,22 +86,27 @@ class Motion:
 
 # first_try = Motion(80, 80)
 
+def positioning(center):
+    print(center)
+
 
 def make_setup(objects):  # p, pos, radius, v, n):
     for o in objects:
         o.turt.color(o.color)
         if o.planet == 0:
+            o.turt.penup()
             o.turt.goto(o.parent.turt.pos() + (o.r, 0))
             o.turt.speed(0)
             o.turt.pensize(2)
-            o.parent_pos = o.parent.pos
+            o.parent_pos = o.parent.turt.pos()
+            o.turt.pendown()
         else:
             o.turt.speed(0)
             o.turt.pensize(1)
         # p.forward(radius)
         # p.setx(pos[1])
         # p.sety(pos[0])
-            o.turt.setpos(o.pos)
+            o.turt.setpos((o.r, 0))
         # p.left(90)
         o.turt.setheading(90)
         o.turt.forward(2*pi*o.r/o.orbittime/2)
@@ -144,37 +149,37 @@ def make_movement(planets, steps):
 
 
 class Planet:  # - adjective center
-    def __init__(self, turt, color, pos, distance2center, orbittime):
+    def __init__(self, turt, color, distance2center, orbittime):
         self.planet = True
         self.turt = turt
         self.color = color
-        self.pos = pos
+        # self.pos = pos
         self.r = distance2center
         self.orbittime = orbittime
 
 
 class Moon(Planet):  # - adjectve adjective center
-    def __init__(self, parent, turt, color, pos, distance2center, ortbittime):  # parent_planet
+    def __init__(self, parent, turt, color, distance2center, ortbittime):  # parent_planet
         self.parent = parent
-        Planet.__init__(self, turt, color, pos, distance2center, ortbittime)
+        Planet.__init__(self, turt, color, distance2center, ortbittime)
         self.planet = False
         self.parent_pos = (0, 0)
         # self.orbittime = orbittime
 
 
-position = [(228, 0), (150, 0), (108, 100), (58, 100)]
+# position = [(228, 0), (150, 0), (108, 100), (58, 100)]
 radius = [228, 150, 108, 58]
 orbittime = [687, 365, 225, 88]
 color = ['black', 'black', 'black', 'black', ]
 
-planet1 = Planet(turtle.Turtle(), color[0], position[0], radius[0], orbittime[0])
-earth = Planet(turtle.Turtle(), color[1], position[1], radius[1], orbittime[1])
-planet3 = Planet(turtle.Turtle(), color[2], position[2], radius[2], orbittime[2])
-planet4 = Planet(turtle.Turtle(), color[3], position[3], radius[3], orbittime[3])
+planet1 = Planet(turtle.Turtle(), color[0], radius[0], orbittime[0])
+earth = Planet(turtle.Turtle(), color[1], radius[1], orbittime[1])
+planet3 = Planet(turtle.Turtle(), color[2], radius[2], orbittime[2])
+planet4 = Planet(turtle.Turtle(), color[3], radius[3], orbittime[3])
 
 # mond = Moon(parent=earth, turt=turtle.Turtle(), color='blue',
 #             distance2center=0.385, orbittime=27)
-mond = Moon(earth, turtle.Turtle(), 'blue', earth.pos, 10.385, 27)
+mond = Moon(earth, turtle.Turtle(), 'blue', 0.385, 27)
 
 planets = [planet1, earth,
            planet3, planet4, mond]
@@ -187,19 +192,15 @@ steps = 300_000
 
 make_setup(planets)
 
-# make_setup(planet1.turt, position[0], radius[0], speed[0], approx)
-# make_setup(earth.turt, position[1], radius[1], speed[1], approx)
-# make_setup(planet3.turt, position[2], radius[2], speed[2], approx)
-# make_setup(planet4.turt, position[3], radius[3], speed[3], approx)
-# make_setup(planet4.turt, position[3], mond.r, speed[3], approx)
-
 make_movement(planets, steps)
 
+positioning((0, 0))
 
 # tu = turtle.Screen()
 # tt = turtle.Turtle()
 # tt.color("Navy")
 # tu.bgcolor("black")
+
 
 # ninja = turtle.Turtle()
 #
@@ -221,7 +222,6 @@ make_movement(planets, steps)
 #
 # turtle.done()
 
-# make_movement()
 
 time.sleep(0.5)
 # n = 1000
