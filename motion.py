@@ -146,6 +146,7 @@ def make_movement(planets, steps):
             # print(i, planet.orbittime)
             if planet.solar:
                 pass
+
                 # if i % 400 == 0:
                 # print('is fix: ', planet.is_fix)
                 # print('its a not moving sun')
