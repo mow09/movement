@@ -7,7 +7,8 @@ moving turtles
 TODO:
 - [ ] setup:
     - screen
-    - datetime
+    - datetime - positioning
+    - which object is fix?
 
 - [ ] real data
 - stars

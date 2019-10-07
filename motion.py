@@ -91,30 +91,39 @@ def positioning(center):
 
 
 def make_setup(objects, setup):  # p, pos, radius, v, n):
+    turtle.penup()
+    turtle.goto(center)
+    # turtle.dot(10, 'red')
     for i, o in enumerate(objects):
+        # o.turt.penup()
         o.turt.color(o.color)
-        if o.planet == 0:
-            o.turt.penup()
-            o.turt.goto(o.parent.turt.pos() + (o.r, 0))
-            o.turt.speed(0)
-            o.turt.pensize(2)
-            o.parent_pos = o.parent.turt.pos()
-            o.turt.pendown()
-        else:
-            o.turt.speed(0)
-            o.turt.pensize(1)
-        # p.forward(radius)
-        # p.setx(pos[1])
-        # p.sety(pos[0])
-            o.turt.goto(center)
-            o.turt.lt(setup[i])
-            o.turt.fd(o.r)
-            # o.turt.setpos((o.r, 0))
+        o.turt.speed(0)
+        if o.solar == False:
+            if o.planet:
+                o.turt.pensize(1)
+                # p.forward(radius)
+                # p.setx(pos[1])
+                # p.sety(pos[0])
+                o.turt.goto(o.parent.turt.pos())
+                o.turt.lt(setup[i])
+                o.turt.fd(o.r)
+            elif o.planet == 0:
+                print('Dasdfasdf?')
+                o.turt.penup()
+                o.turt.goto(o.parent.turt.pos() + (o.r, 0))
+                o.turt.pensize(2)
+                o.parent_pos = o.parent.turt.pos()
+                # o.turt.pendown()
+                # o.turt.setpos((o.r, 0))
+            o.turt.lt(90)
+            o.turt.forward(2*pi*o.r/o.orbittime/2)
+        elif o.solar:  # solar
+            print('DELAY??')
+
         # p.left(90)
         # o.turt.setheading(90)
         # o.turt.seth(90)
-        o.turt.lt(90)
-        o.turt.forward(2*pi*o.r/o.orbittime/2)
+        o.turt.pendown()
 
 
 def make_move(p, radius, n):
@@ -135,41 +144,78 @@ def make_movement(planets, steps):
 
         for planet in planets:
             # print(i, planet.orbittime)
-            if i % planet.orbittime == 0:
-                # print('as', 1 % planet.orbittime)
-                if planet.planet == 0:
-                    # print('Moon movement', planet.parent.turt.pos())
-                    # planet.turt.goto(planet.parent.turt.pos() + (planet.r, 0))
-                    # print(planet.parent_pos, planet.parent.turt.pos())
-                    if planet.parent_pos != planet.parent.turt.pos():
-                        # print(planet.center())
-                        print('here', planet.get_center(), planet.parent.turt.pos())
-                        planet.turt.setpos((planet.turt.pos() +
-                                            planet.parent.turt.pos() - planet.parent_pos))
-                        planet.parent_pos = planet.parent.turt.pos()
-                make_move(planet.turt, planet.r, planet.orbittime)
-            # p.circle(r)
+            if planet.solar:
+                if i % 400 == 0:
+                    print('is fix: ', planet.is_fix)
+                    print('its a not moving sun')
+            else:
+                if i % planet.orbittime == 0:
+                    # print('as', 1 % planet.orbittime)
+                    if planet.planet == 0:
+                        # print('Moon movement', planet.parent.turt.pos())
+                        # planet.turt.goto(planet.parent.turt.pos() + (planet.r, 0))
+                        # print(planet.parent_pos, planet.parent.turt.pos())
+                        if planet.parent_pos != planet.parent.turt.pos():
+                            # print(planet.center())
+                            # print('here', planet.get_center(), planet.parent.turt.pos())
+                            planet.turt.setpos((planet.turt.pos() +
+                                                planet.parent.turt.pos() - planet.parent_pos))
+                            planet.parent_pos = planet.parent.turt.pos()
+                        else:
+                            pass
+                            # here is the act center
+                    make_move(planet.turt, planet.r, planet.orbittime)
+                # p.circle(r)
             # print(p.pos())
             # print(round(p.xcor(), 2))
         # if i == 4:
         #     p.home()
 
 
-class Planet:  # - adjective center
-    def __init__(self, turt, color, center, distance2center, orbittime):
-        self.planet = True
+class Solar:
+    def __init__(self, turt, color, center):
         self.turt = turt
         self.color = color
         # self.pos = pos
+        self.solar = True
         self.center = center
+        self.is_fix = True  # sun is the center
+
+    def focus(self, object):
+        self.is_fix = False  # the sun is fixed surrounding an object
+        print(object)
+        self.orbittime = object.orbittime
+        self.solar = False
+        self.planet = True
+        self.parent = object
+        self.r = object.r
+        object.solar = True
+        # get object data
+        # make objext fix
+
+
+class Planet(Solar):  # - adjective center
+    def __init__(self, parent, turt, color, center, distance2center, orbittime):
+        Solar.__init__(self, turt, color, center)
+        self.parent = parent
+        self.solar = False
+        self.planet = True
+        # self.turt = turt
+        # self.color = color
+        # # self.pos = pos
+        # self.center = center
         self.r = distance2center
         self.orbittime = orbittime
+        self.parent_pos = (0, 0)
+
+        def get_center(self):
+            return self.parent.turt.pos()
 
 
 class Moon(Planet):  # - adjectve adjective center
     def __init__(self, parent, turt, color, distance2center, ortbittime):
-        self.parent = parent
-        Planet.__init__(self, turt, color, center, distance2center, ortbittime)
+        Planet.__init__(self, parent, turt, color, center, distance2center, ortbittime)
+        self.solar = False
         self.planet = False
         self.parent_pos = (0, 0)
         # self.center = self.get_center()
@@ -185,18 +231,20 @@ radius = [228, 150, 108, 58]
 orbittime = [687, 365, 225, 88]
 color = ['black', 'black', 'black', 'black', ]
 
-center = (30, 10)
+center = (10, 20)
 
-planet1 = Planet(turtle.Turtle(), color[0], center, radius[0], orbittime[0])
-earth = Planet(turtle.Turtle(), color[1], center, radius[1], orbittime[1])
-planet3 = Planet(turtle.Turtle(), color[2], center, radius[2], orbittime[2])
-planet4 = Planet(turtle.Turtle(), color[3], center, radius[3], orbittime[3])
+sun = Solar(turtle.Turtle(), 'green', (20, 10))
+
+planet1 = Planet(sun, turtle.Turtle(), color[0], center, radius[0], orbittime[0])
+earth = Planet(sun, turtle.Turtle(), color[1], center, radius[1], orbittime[1])
+planet3 = Planet(sun, turtle.Turtle(), color[2], center, radius[2], orbittime[2])
+planet4 = Planet(sun, turtle.Turtle(), color[3], center, radius[3], orbittime[3])
 
 # mond = Moon(parent=earth, turt=turtle.Turtle(), color='blue',
 #             distance2center=0.385, orbittime=27)
 mond = Moon(earth, turtle.Turtle(), 'blue', 0.385, 27)
 
-planets = [planet1, earth,
+planets = [sun, planet1, earth,
            planet3, planet4, mond]
 
 # speed = [0, 0.5, 1, 1.5]
@@ -206,7 +254,10 @@ approx = 10
 steps = 300_000
 
 # is a list of fix angles - should be a setup by TIME
-set_up = [45, 90, 135, 186]
+# which object is fix
+set_up = [0, 45, 90, 135, 186]
+
+sun.focus(earth)
 
 make_setup(planets, set_up)
 
