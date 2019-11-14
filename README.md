@@ -7,6 +7,12 @@ is about moving objects.
 pos = get_orbit_points(n)  # returns n positions on circle
 draw_lines(pos, factor) # draws lines with turtle
 ```
+Important factors
+21,29,33,34,4x,51,66,67,73,76/78,79,...91
+
+- [ ] make it drawable
+
+__Maybe add some MATHe__
 
 
 ## following is old from inner planet system simulation

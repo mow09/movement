@@ -77,4 +77,4 @@ def main(factor,n):
 
 if __name__ == "__main__":
     """Run if called as main."""
-    main(9,550)
+    main(76,550)
