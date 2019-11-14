@@ -2,8 +2,11 @@
 is about moving objects.
 
 ## Mandelturtle
-first steps of drawing
 
+```python
+pos = get_orbit_points(n)  # returns n positions on circle
+draw_lines(pos, factor) # draws lines with turtle
+```
 
 
 ## following is old from inner planet system simulation
