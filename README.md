@@ -1,3 +1,5 @@
+## under the topic beautiful math - physic
+
 # MOVEMENT
 is about moving objects.
 
@@ -10,7 +12,8 @@ draw_lines(pos, factor) # draws lines with turtle
 Important factors
 21,29,33,34,4x,51,66,67,73,76/78,79,...91
 
-- [ ] make it drawable
+- [ ] make it drawable - nice to look at
+- [ ] prepare it in a easy way to put it on the web
 
 __Maybe add some MATHe__
 

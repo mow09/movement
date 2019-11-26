@@ -227,79 +227,80 @@ class Moon(Planet):  # - adjectve adjective center
 
         # self.orbittime = orbittime
 
+if __name__ == "__main__":
 
-# position = [(228, 0), (150, 0), (108, 100), (58, 100)]
-radius = [228, 150, 108, 58]
-orbittime = [687, 365, 225, 88]
-color = ['green', 'yellow', 'black', 'gray', ]
+    # position = [(228, 0), (150, 0), (108, 100), (58, 100)]
+    radius = [228, 150, 108, 58]
+    orbittime = [687, 365, 225, 88]
+    color = ['green', 'yellow', 'black', 'gray', ]
 
-center = (10, 20)
+    center = (10, 20)
 
-sun = Solar(turtle.Turtle(), 'red', (20, 10))
+    sun = Solar(turtle.Turtle(), 'red', (20, 10))
 
-planet1 = Planet(sun, turtle.Turtle(), color[0], center, radius[0], orbittime[0])
-earth = Planet(sun, turtle.Turtle(), color[1], center, radius[1], orbittime[1])
-planet3 = Planet(sun, turtle.Turtle(), color[2], center, radius[2], orbittime[2])
-planet4 = Planet(sun, turtle.Turtle(), color[3], center, radius[3], orbittime[3])
+    planet1 = Planet(sun, turtle.Turtle(), color[0], center, radius[0], orbittime[0])
+    earth = Planet(sun, turtle.Turtle(), color[1], center, radius[1], orbittime[1])
+    planet3 = Planet(sun, turtle.Turtle(), color[2], center, radius[2], orbittime[2])
+    planet4 = Planet(sun, turtle.Turtle(), color[3], center, radius[3], orbittime[3])
 
-# mond = Moon(parent=earth, turt=turtle.Turtle(), color='blue',
-#             distance2center=0.385, orbittime=27)
-mond = Moon(earth, turtle.Turtle(), 'black', 0.385, 27)
+    # mond = Moon(parent=earth, turt=turtle.Turtle(), color='blue',
+    #             distance2center=0.385, orbittime=27)
+    mond = Moon(earth, turtle.Turtle(), 'black', 0.385, 27)
 
-planets = [sun, planet1, earth,
-           planet3, planet4, mond]
+    planets = [sun, planet1, earth,
+               planet3, planet4, mond]
 
-# speed = [0, 0.5, 1, 1.5]
-speed = [0 for i in range(len(planets))]
+    # speed = [0, 0.5, 1, 1.5]
+    speed = [0 for i in range(len(planets))]
 
-approx = 10
-steps = 3_000_000
+    approx = 10
+    steps = 3_000_000
 
-# is a list of fix angles - should be a setup by TIME
-# which object is fix
-set_up = [0, 45, 90, 135, 186]
+    # is a list of fix angles - should be a setup by TIME
+    # which object is fix
+    set_up = [0, 45, 90, 135, 186]
 
-sun.focus(earth)
+    sun.focus(earth)
 
-make_setup(planets, set_up)
+    make_setup(planets, set_up)
 
-make_movement(planets, steps)
+    make_movement(planets, steps)
 
-positioning((0, 0))
+    positioning((0, 0))
 
-# tu = turtle.Screen()
-# tt = turtle.Turtle()
-# tt.color("Navy")
-# tu.bgcolor("black")
-
-
-# ninja = turtle.Turtle()
-#
-# ninja.speed(10)
-#
-# for i in range(180):
-#     ninja.forward(100)
-#     ninja.right(30)
-#     ninja.forward(20)
-#     ninja.left(60)
-#     ninja.forward(50)
-#     ninja.right(30)
-#
-#     # ninja.penup()
-#     ninja.setposition(0, 0)
-#     ninja.pendown()
-#
-#     ninja.right(2)
-#
-# turtle.done()
+    # tu = turtle.Screen()
+    # tt = turtle.Turtle()
+    # tt.color("Navy")
+    # tu.bgcolor("black")
 
 
-time.sleep(0.5)
-# n = 1000
-# for i in range(n):
-#     planet1.left(rad_grad(get_rad_step(n)))
-#     planet1.forward(2*pi*radius/n)
+    # ninja = turtle.Turtle()
+    #
+    # ninja.speed(10)
+    #
+    # for i in range(180):
+    #     ninja.forward(100)
+    #     ninja.right(30)
+    #     ninja.forward(20)
+    #     ninja.left(60)
+    #     ninja.forward(50)
+    #     ninja.right(30)
+    #
+    #     # ninja.penup()
+    #     ninja.setposition(0, 0)
+    #     ninja.pendown()
+    #
+    #     ninja.right(2)
+    #
+    # turtle.done()
 
-# Solar - center etc
-# Planet - adjective center
-# Moon - adjectve adjective center
+
+    time.sleep(0.5)
+    # n = 1000
+    # for i in range(n):
+    #     planet1.left(rad_grad(get_rad_step(n)))
+    #     planet1.forward(2*pi*radius/n)
+
+    # Solar - center etc
+    # Planet - adjective center
+    # Moon - adjectve adjective center
