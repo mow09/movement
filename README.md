@@ -1,5 +1,7 @@
 ## under the topic beautiful math - physic
 
+[![Build Status](https://travis-ci.com/mow09/movement.svg?token=3YzpCr7zqrJRwks2k22w&branch=master)](https://travis-ci.com/mow09/movement)
+
 # MOVEMENT
 is about moving objects.
 
