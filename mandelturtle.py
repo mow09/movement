@@ -10,10 +10,11 @@ from math import pi, cos, sin
 #                                 sin(i)*self.r[0]+self.y))
 
 
-def draw_orbit(orbit_pos):
+def draw_orbit(orbit_pos, fast=True):
     """Draw the points."""
     # orbit_points = []
-    turtle.tracer(0, 0)
+    if fast:
+        turtle.tracer(0, 0)
     for x, y in orbit_pos:
         orbit = turtle.Turtle()
         orbit.ht()
@@ -45,32 +46,34 @@ def draw_lines(orbit_pos, x, y, factor, i):
     orbit.penup()
     orbit.goto(x, y)
     orbit.pendown()
+    orbit.fd(0)
     # if (i) < len(orbit_pos)-1:
+    # print(orbit.pos())
     orbit.goto(orbit_pos[next])
 
     # for i in range(len(orbit_pos)):
     #     turtle.stamp()
 
     # turtle.update()
-    #   turtle.update()
+    # turtle.update()
 
 
 def draw_lines_insta(orbit_pos, factor):
+    """Draw the line instant to see the result."""
     for i, (x, y) in enumerate(orbit_pos):
         draw_lines(orbit_pos, x, y, factor, i)
     turtle.update()
 
 
 def draw_lines_fast(orbit_pos, factor):
+    """Draw the lines instant line by line."""
     for i, (x, y) in enumerate(orbit_pos):
         draw_lines(orbit_pos, x, y, factor, i)
         turtle.update()
 
 
-def draw_lines_slow():
-    ...
-
-    turtle.update()
+def draw_lines_slow(orbit_pos, factor):
+    """Draw the lines so ypu can watch it."""
 
 
 def get_orbit_points(n=10, r=400):
@@ -89,7 +92,6 @@ def main_loop(n):
 def main(factor, n):
     """Run main."""
     win = turtle.Screen()
-    t = turtle.Turtle()
     pos = get_orbit_points(n)
     draw_orbit(pos)
     draw_lines_fast(pos, factor)
@@ -97,8 +99,44 @@ def main(factor, n):
     win.clear()
 
 
+def main2(factor, n):
+    """Test the slow draw lines."""
+    pos = get_orbit_points(n)
+    draw_orbit(pos, fast=True)
+    draw_lines_insta(pos, factor)
+
+
+def draw_lines_slow(orbit_pos, factor):
+    """Draw the lines so ypu can watch it."""
+
+    for i, (x, y) in enumerate(orbit_pos):
+        t = turtle.Turtle()
+        # t.ht()
+        next = i*factor
+        while next >= len(orbit_pos):
+            next -= (int(len(orbit_pos)))
+
+        print(next)
+        t.pd()
+        t.goto(0, 0)
+        t.left(90)
+        t.fd(200)
+        t.fd(200)
+
+    # t.penup()
+    # t.goto(x, y)
+    # t.pendown()
+    # t.fd(0)
+    # # if (i) < len(orbit_pos)-1:
+    # # print(t.pos())
+    # t.goto(orbit_pos[next])
+
+
 if __name__ == "__main__":
     """Run if called as main."""
-    main(76, 550)
+    print('factor < n')
+    main2(91, 800)
+    time.sleep(3)
+
 
 # senior data -
