@@ -2,7 +2,7 @@
 # trutle breath
 import turtle
 import time
-import random
+# import random
 from math import pi, cos, sin
 
 # for i in self.get_rad_list(approx):
@@ -20,7 +20,7 @@ def draw_orbit(orbit_pos):
         orbit.penup()
         # dot = Dot(r, r*i, 'red')
         # dot.goto(orbit)
-        orbit.goto(x,y)
+        orbit.goto(x, y)
         orbit.dot(4, 'red')  # Radius and 'color'
         # orbit_points.append(orbit)
 
@@ -30,26 +30,45 @@ def draw_orbit(orbit_pos):
     turtle.update()
 
 
-def draw_lines(orbit_pos, factor):
+def draw_lines(orbit_pos, x, y, factor, i):
     """Draw the lines between the points with a factor of neighbours."""
-    turtle.tracer(0, 0)
-    for i, (x, y) in enumerate(orbit_pos):
-        orbit = turtle.Turtle()
-        orbit.ht()
-        next = i*factor
-        while next >= len(orbit_pos):
-            print('i', i)
-            print('1', next)
-            next -= (int(len(orbit_pos)))
-            print('2', next)
-        orbit.penup()
-        orbit.goto(x,y)
-        orbit.pendown()
-        # if (i) < len(orbit_pos)-1:
-        orbit.goto(orbit_pos[next])
+    # turtle.tracer(0, 0)
+    # for i, (x, y) in enumerate(orbit_pos):
+    orbit = turtle.Turtle()
+    orbit.ht()
+    next = i*factor
+    while next >= len(orbit_pos):
+        print('i', i)
+        print('1', next)
+        next -= (int(len(orbit_pos)))
+        print('2', next)
+    orbit.penup()
+    orbit.goto(x, y)
+    orbit.pendown()
+    # if (i) < len(orbit_pos)-1:
+    orbit.goto(orbit_pos[next])
 
-    for i in range(len(orbit_pos)):
-        turtle.stamp()
+    # for i in range(len(orbit_pos)):
+    #     turtle.stamp()
+
+    # turtle.update()
+    #   turtle.update()
+
+
+def draw_lines_insta(orbit_pos, factor):
+    for i, (x, y) in enumerate(orbit_pos):
+        draw_lines(orbit_pos, x, y, factor, i)
+    turtle.update()
+
+
+def draw_lines_fast(orbit_pos, factor):
+    for i, (x, y) in enumerate(orbit_pos):
+        draw_lines(orbit_pos, x, y, factor, i)
+        turtle.update()
+
+
+def draw_lines_slow():
+    ...
 
     turtle.update()
 
@@ -61,20 +80,25 @@ def get_orbit_points(n=10, r=400):
         orbit_pos.append((cos(j)*r, sin(j)*r))
     return orbit_pos
 
-def main_loop(n):
-    for i in range(1,6):
-        main(i,n)
 
-def main(factor,n):
+def main_loop(n):
+    for i in range(1, 6):
+        main(i, n)
+
+
+def main(factor, n):
     """Run main."""
     win = turtle.Screen()
     t = turtle.Turtle()
     pos = get_orbit_points(n)
     draw_orbit(pos)
-    draw_lines(pos, factor)
+    draw_lines_fast(pos, factor)
     time.sleep(3)
     win.clear()
 
+
 if __name__ == "__main__":
     """Run if called as main."""
-    main(76,550)
+    main(76, 550)
+
+# senior data -
