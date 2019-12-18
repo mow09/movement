@@ -132,6 +132,10 @@ def make_move(p, radius, n):
 
 
 def display_percent(m, n):
+    """
+    m is the current step (x%)
+    n is the amount of steps (100%)
+    """
     if m/n*100 % 5 == 0:
         print(int(m/n*100), '%')
 
@@ -166,16 +170,19 @@ def make_movement(planets, steps):
                         # else:
                         #     pass
                         # here is the act center
+                    print(planet.get_position(), planet.name)
                     make_move(planet.turt, planet.r, planet.orbittime)
                 # p.circle(r)
             # print(p.pos())
             # print(round(p.xcor(), 2))
-        # if i == 4:
-        #     p.home()
+    print()
+    # if i == 4:
+    #     p.home()
 
 
 class Solar:
-    def __init__(self, turt, color, center):
+    def __init__(self, turt, color, center, name):
+        self.name = name
         self.turt = turt
         self.color = color
         # self.pos = pos
@@ -195,10 +202,13 @@ class Solar:
         # get object data
         # make objext fix
 
+    def get_position(self):
+        return self.turt.pos()
+
 
 class Planet(Solar):  # - adjective center
-    def __init__(self, parent, turt, color, center, distance2center, orbittime):
-        Solar.__init__(self, turt, color, center)
+    def __init__(self, parent, turt, color, center, distance2center, orbittime, name):
+        Solar.__init__(self, turt, color, center, name)
         self.parent = parent
         self.solar = False
         self.planet = True
@@ -215,8 +225,8 @@ class Planet(Solar):  # - adjective center
 
 
 class Moon(Planet):  # - adjectve adjective center
-    def __init__(self, parent, turt, color, distance2center, ortbittime):
-        Planet.__init__(self, parent, turt, color, center, distance2center, ortbittime)
+    def __init__(self, parent, turt, color, distance2center, ortbittime, name):
+        Planet.__init__(self, parent, turt, color, center, distance2center, ortbittime, name)
         self.solar = False
         self.planet = False
         self.parent_pos = (0, 0)
@@ -227,25 +237,27 @@ class Moon(Planet):  # - adjectve adjective center
 
         # self.orbittime = orbittime
 
+
 if __name__ == "__main__":
 
     # position = [(228, 0), (150, 0), (108, 100), (58, 100)]
     radius = [228, 150, 108, 58]
     orbittime = [687, 365, 225, 88]
     color = ['green', 'yellow', 'black', 'gray', ]
+    name = ['Sonne', 'Mars', 'Erde', 'Vernus', 'Merkur', 'Mond']
 
     center = (10, 20)
 
-    sun = Solar(turtle.Turtle(), 'red', (20, 10))
+    sun = Solar(turtle.Turtle(), 'red', (20, 10), name[0])
 
-    planet1 = Planet(sun, turtle.Turtle(), color[0], center, radius[0], orbittime[0])
-    earth = Planet(sun, turtle.Turtle(), color[1], center, radius[1], orbittime[1])
-    planet3 = Planet(sun, turtle.Turtle(), color[2], center, radius[2], orbittime[2])
-    planet4 = Planet(sun, turtle.Turtle(), color[3], center, radius[3], orbittime[3])
+    planet1 = Planet(sun, turtle.Turtle(), color[0], center, radius[0], orbittime[0], name[1])
+    earth = Planet(sun, turtle.Turtle(), color[1], center, radius[1], orbittime[1], name[2])
+    planet3 = Planet(sun, turtle.Turtle(), color[2], center, radius[2], orbittime[2], name[3])
+    planet4 = Planet(sun, turtle.Turtle(), color[3], center, radius[3], orbittime[3], name[4])
 
     # mond = Moon(parent=earth, turt=turtle.Turtle(), color='blue',
     #             distance2center=0.385, orbittime=27)
-    mond = Moon(earth, turtle.Turtle(), 'black', 0.385, 27)
+    mond = Moon(earth, turtle.Turtle(), 'black', 0.385, 27, name[5])
 
     planets = [sun, planet1, earth,
                planet3, planet4, mond]
@@ -253,8 +265,8 @@ if __name__ == "__main__":
     # speed = [0, 0.5, 1, 1.5]
     speed = [0 for i in range(len(planets))]
 
-    approx = 10
-    steps = 3_000_000
+    approx = 360
+    steps = 3_000
 
     # is a list of fix angles - should be a setup by TIME
     # which object is fix
@@ -266,13 +278,10 @@ if __name__ == "__main__":
 
     make_movement(planets, steps)
 
-    positioning((0, 0))
-
     # tu = turtle.Screen()
     # tt = turtle.Turtle()
     # tt.color("Navy")
     # tu.bgcolor("black")
-
 
     # ninja = turtle.Turtle()
     #
@@ -293,7 +302,6 @@ if __name__ == "__main__":
     #     ninja.right(2)
     #
     # turtle.done()
-
 
     time.sleep(0.5)
     # n = 1000
